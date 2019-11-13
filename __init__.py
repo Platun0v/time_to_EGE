@@ -6,7 +6,7 @@ import arrow
 import requests
 
 
-PEER_ID = 475552069
+PEER_ID = 118 + 2000000000
 TOKEN = 'ec932e44e27f149ee204d48143fa244883cfb72e5bcda7ee2c1f762167487f171ae87e8d2d6eeebbdfe7c'
 
 
