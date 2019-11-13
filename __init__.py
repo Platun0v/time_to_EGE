@@ -37,7 +37,7 @@ DATES = [
     DateMessage('До ЕГЭ осталось {}', arrow.Arrow(2020, 5, 25)),
 ]
 
-WHEN_TO_CALL = datetime.time(9, 37, 0)
+WHEN_TO_CALL = datetime.time(0, 0, 0)
 
 
 def start():
