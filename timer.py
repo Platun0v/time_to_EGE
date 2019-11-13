@@ -168,7 +168,8 @@ class Timer(threading.Thread):
                 time_to_sleep = self._time_diff(datetime.time(23, 59, 59),
                                                 self._time_now()) \
                                 + self._time_diff(self._times[it],
-                                                  datetime.time(0, 0, 0))
+                                                  datetime.time(0, 0, 0)) \
+                                + 1
                 tomorrow = False
             else:
                 time_to_sleep = self._time_diff(self._times[it],

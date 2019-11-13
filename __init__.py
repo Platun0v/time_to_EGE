@@ -7,43 +7,47 @@ import requests
 
 
 PEER_ID = 475552069
-TOKEN = '9fa4fa588c99f77063d80794265609a80b19f9f58330324f93ce3d5d6d6e624668fa508373a9446ab5a34'
+TOKEN = 'ec932e44e27f149ee204d48143fa244883cfb72e5bcda7ee2c1f762167487f171ae87e8d2d6eeebbdfe7c'
 
 
-FINAL_ESSAY = 'До итогового сочинения осталось {}'
-FINAL_ESSAY_DATE = arrow.Arrow(2019, 12, 4)
+class DateMessage:
+    def __init__(self, text: str, date: arrow.Arrow):
+        self.text = text
+        self.date = date
 
-EGE = 'До ЕГЭ осталось {}'
-EGE_DATE = arrow.Arrow(2020, 5, 25)
+    def get_message(self):
+        delta = (self.date - arrow.now()).days
+        return self.text.format(f'{delta} {self.normal_days_name(delta)}')
 
-WHEN_TO_CALL = datetime.time(0, 0, 0)
+    @staticmethod
+    def normal_days_name(days):
+        days = str(days)
+        if len(days) > 1 and days[-2] == '1':
+            return 'дней'
+        elif days[-1] in ['0', '5', '6', '7', '8', '9']:
+            return 'дней'
+        elif days[-1] == '1':
+            return 'день'
+        elif days[-1] in ['2', '3', '4']:
+            return 'дня'
 
 
-def main():
-    timer = Timer(update)
-    timer.call_everyday((WHEN_TO_CALL,))
-    timer.start()
+DATES = [
+    DateMessage('До итогового сочинения осталось {}', arrow.Arrow(2019, 12, 4)),
+    DateMessage('До ЕГЭ осталось {}', arrow.Arrow(2020, 5, 25)),
+]
+
+WHEN_TO_CALL = datetime.time(9, 37, 0)
+
+
+def start():
+    t = Timer(update)
+    t.call_everyday((WHEN_TO_CALL,))
+    t.run()
 
 
 def update():
-    delta_essay = abs((arrow.now() - FINAL_ESSAY_DATE).days)
-    delta_ege = abs((arrow.now() - EGE_DATE).days)
-    text1 = FINAL_ESSAY.format(f'{delta_essay} {normal_days_name(delta_essay)}')
-    text2 = EGE.format(f'{delta_ege} {normal_days_name(delta_ege)}')
-
-    send_message(f'{text1}\n{text2}')
-
-
-def normal_days_name(days):
-    days = str(days)
-    if len(days) > 1 and days[-2] == '1':
-        return 'дней'
-    elif days[-1] in ['0', '5', '6', '7', '8', '9']:
-        return 'дней'
-    elif days[-1] == '1':
-        return 'день'
-    elif days[-1] in ['2', '3', '4']:
-        return 'дня'
+    send_message('\n'.join(map(lambda x: x.get_message(), DATES)))
 
 
 def send_message(text):
@@ -53,8 +57,7 @@ def send_message(text):
         'peer_id': PEER_ID,
         'message': text,
         'random_id': randint(1, 10**9)
-    })
+    }).json()
 
 
-if __name__ == '__main__':
-    main()
+start()
