@@ -33,7 +33,6 @@ class DateMessage:
 
 
 DATES = [
-    DateMessage('До нового года осталось {} 🎄🎄🎄', arrow.Arrow(2020, 1, 1)),
     DateMessage('До ЕГЭ осталось {}', arrow.Arrow(2020, 5, 25)),
 ]
 
