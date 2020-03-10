@@ -1,13 +1,14 @@
 from random import randint
+import os
 
-from .timer import Timer
+from timer import Timer
 import datetime
 import arrow
 import requests
 
 
 PEER_ID = 118 + 2000000000
-TOKEN = 'ec932e44e27f149ee204d48143fa244883cfb72e5bcda7ee2c1f762167487f171ae87e8d2d6eeebbdfe7c'
+TOKEN = os.getenv('VK_TOKEN')
 
 
 class DateMessage:
@@ -58,5 +59,5 @@ def send_message(text):
         'random_id': randint(1, 10**9)
     }).json()
 
-
-start()
+if __name__ == '__main__':
+    start()
