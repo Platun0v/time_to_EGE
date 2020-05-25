@@ -34,7 +34,7 @@ class DateMessage:
 
 
 DATES = [
-    DateMessage('До ЕГЭ осталось {}', arrow.Arrow(2020, 6, 29)),
+    DateMessage('До ЕГЭ осталось {}', arrow.Arrow(2020, 7, 3)),
 ]
 
 WHEN_TO_CALL = datetime.time(0, 0, 0)
