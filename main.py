@@ -16,6 +16,8 @@ class DateMessage:
 
     def get_message(self):
         delta = (self.date - arrow.now()).days
+        if delta < 0:
+            return ''
         return self.text.format(f'{delta} {self.normal_days_name(delta)}')
 
     @staticmethod
