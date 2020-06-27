@@ -1,12 +1,10 @@
 from random import randint
-import os
-import datetime
 
 import arrow
 import requests
+from loguru import logger
 
-PEER_ID = 118 + 2000000000
-TOKEN = os.getenv('VK_TOKEN')
+import config
 
 
 class DateMessage:
@@ -40,18 +38,17 @@ DATES = [
     DateMessage('До ЕГЭ по физике осталось {}', arrow.Arrow(2020, 7, 13)),
 ]
 
-WHEN_TO_CALL = datetime.time(0, 0, 0)
 
-
+@logger.catch
 def update():
     send_message('\n'.join(map(lambda x: x.get_message(), DATES)))
 
 
 def send_message(text):
     requests.get(f'https://api.vk.com/method/messages.send', {
-        'access_token': TOKEN,
+        'access_token': config.TOKEN,
         'v': '5.100',
-        'peer_id': PEER_ID,
+        'peer_id': config.PEER_ID,
         'message': text,
         'random_id': randint(1, 10 ** 9)
     }).json()
