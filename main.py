@@ -35,6 +35,7 @@ DATES = [
     DateMessage('До ЕГЭ по информатике осталось {}', arrow.Arrow(2020, 7, 3)),
     DateMessage('До ЕГЭ по русскому осталось {}', arrow.Arrow(2020, 7, 7)),
     DateMessage('До ЕГЭ по математике осталось {}', arrow.Arrow(2020, 7, 10)),
+    DateMessage('До ЕГЭ по физике осталось {}', arrow.Arrow(2020, 7, 13)),
 ]
 
 WHEN_TO_CALL = datetime.time(0, 0, 0)
