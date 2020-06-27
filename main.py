@@ -1,11 +1,9 @@
 from random import randint
 import os
-
-from timer import Timer
 import datetime
+
 import arrow
 import requests
-
 
 PEER_ID = 118 + 2000000000
 TOKEN = os.getenv('VK_TOKEN')
@@ -42,12 +40,6 @@ DATES = [
 WHEN_TO_CALL = datetime.time(0, 0, 0)
 
 
-def start():
-    t = Timer(update)
-    t.call_everyday((WHEN_TO_CALL,))
-    t.run()
-
-
 def update():
     send_message('\n'.join(map(lambda x: x.get_message(), DATES)))
 
@@ -58,8 +50,9 @@ def send_message(text):
         'v': '5.100',
         'peer_id': PEER_ID,
         'message': text,
-        'random_id': randint(1, 10**9)
+        'random_id': randint(1, 10 ** 9)
     }).json()
 
+
 if __name__ == '__main__':
-    start()
+    update()
