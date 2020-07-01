@@ -1,4 +1,4 @@
-from random import randint
+from typing import Tuple
 
 import arrow
 import requests
@@ -12,30 +12,42 @@ class DateMessage:
         self.text = text
         self.date = date
 
-    def get_message(self):
+    def get_message(self) -> str:
         delta = (self.date - arrow.now()).days
         if delta < 0:
             return ''
-        return self.text.format(f'{delta} {self.normal_days_name(delta)}')
+
+        norm_names = self.normal_days_name(delta)
+        return self.text.format(date=f'{norm_names[0]} {delta} {norm_names[1]}')
 
     @staticmethod
-    def normal_days_name(days):
+    def normal_days_name(days: int) -> Tuple[str, str]:
         days = str(days)
         if len(days) > 1 and days[-2] == '1':
-            return 'дней'
+            return 'осталось', 'дней'
         elif days[-1] in ['0', '5', '6', '7', '8', '9']:
-            return 'дней'
+            return 'осталось', 'дней'
         elif days[-1] == '1':
-            return 'день'
+            return 'остался', 'день'
         elif days[-1] in ['2', '3', '4']:
-            return 'дня'
+            return 'осталось', 'дня'
+
+
+class EGEDateMessage(DateMessage):
+    def __init__(self, subject: str, date: arrow.Arrow,
+                 base: str = 'До ЕГЭ по {subject} {date}',
+                 on_day: str = 'Всем удачи на ЕГЭ по {subject}!'):
+        super().__init__(base.format(subject=subject, date='{date}'), date)
+
+        if (self.date - arrow.now()).days == 0:
+            self.text = on_day.format(subject=subject)
 
 
 DATES = [
-    DateMessage('До ЕГЭ по информатике осталось {}', arrow.Arrow(2020, 7, 3)),
-    DateMessage('До ЕГЭ по русскому осталось {}', arrow.Arrow(2020, 7, 7)),
-    DateMessage('До ЕГЭ по математике осталось {}', arrow.Arrow(2020, 7, 10)),
-    DateMessage('До ЕГЭ по физике осталось {}', arrow.Arrow(2020, 7, 13)),
+    EGEDateMessage('информатике', arrow.Arrow(2020, 7, 3, hour=10, tzinfo='UTC+3')),
+    EGEDateMessage('русскому', arrow.Arrow(2020, 7, 7, hour=10, tzinfo='UTC+3')),
+    EGEDateMessage('математике', arrow.Arrow(2020, 7, 10, hour=10, tzinfo='UTC+3')),
+    EGEDateMessage('физике', arrow.Arrow(2020, 7, 13, hour=10, tzinfo='UTC+3')),
 ]
 
 
